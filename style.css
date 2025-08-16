@@ -45,11 +45,130 @@ img{
     justify-content: center;
 }
 
-button{
+button {
     font-size: 1.5rem;
     color: #f00;
     border: 1px solid red;
     background: rgba(0, 0, 0, 0);
     padding: 0.5rem 1rem;
     border-radius: 0.3vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff3333;
+    border-color: #ff3333;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+section img{
+    margin: 1rem;
+    display: none;
+    border-radius: 1rem;
+    border: 3px solid rgba(0, 0, 0, 0.5);
+}
+
+.center{
+    height: 30vw;
+    display: block;
+}
+
+.toRight{
+    position: absolute;
+    display: block;
+    border: 0;
+    width: 5rem;
+    opacity: 0.5;
+    right: 30vw;
+}
+
+.toLeft{
+    position: absolute;
+    display: block;
+    border: 0;
+    width: 5rem;
+    opacity: 0.5;
+    left: 30vw;
+    transform: scaleX(-1);
+}
+
+.toRight:hover, .toLeft:hover{
+    opacity: 1;
+}
+
+.admin-access {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#adminPasswordInput {
+    font-size: 1rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #f00;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 0.3vw;
+    width: 150px;
+    text-align: center;
+}
+
+#adminPasswordInput:focus {
+    outline: none;
+    box-shadow: 0 0 5px #f00;
+}
+
+.tg-button {
+    text-decoration: none;
+}
+
+[src="pictures/tattoo.jpg"]{
+    display: block;
+    height: 30vw;
+}
+
+@media (max-width: 900px){
+    .toLeft{
+        left: 15vw;
+    }
+
+    .toRight{
+        right: 15vw;
+    }
+
+
+    .center{
+        height: 60vw;
+    }
+
+    [src="pictures/tattoo.jpg"]{
+        height: 60vw;
+    }
+    
+}
+
+@media (max-width: 500px){
+    .toLeft{
+        left: 5vw;
+    }
+
+    .toRight{
+        right: 5vw;
+    }
+
+    .center{
+        height: 90vw;
+    }
+
+    [src="pictures/tattoo.jpg"]{
+        height: 90vw;
+    }
 }

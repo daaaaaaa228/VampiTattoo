@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
-        </style>
-        <title>Vampi Tattoo</title>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Vampi Tattoo</h1>
-            <section>
-                <p>немного текста о себе (что-то типа знакомства)</p>
-            </section>
-            <section>
-                <img src="" alt="фоточка где татухи бьются">
-            </section>
-            <section>
-                <p>немного текста (о том что ты бьешь аккуратно, со всеми мерами осторжности и тд)</p>
-            </section>
-            <section>
-                <img src="" alt="слайдер" id="i1">
-                <img src="" alt="слайдер" id="i2">
-                <img src="" alt="слайдер" id="i3">
-            </section>
-            <section>
-                <p>и тут можно еще немного текста (рассказать например почему стоит выбрать тебя)</p>
-            </section>
-            <button>
-                Записаться
-            </button>
-        </div>  
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+    </style>
+    <title>Vampi Tattoo</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Vampi Tattoo</h1>
+        <section>
+            <p>Привет! Меня зовут Настя, и я занимаюсь искусством татуировки в Омске. Тату - это моя страсть, и я вкладываю душу в каждую работу. Приглашаю вас в мой уютный кабинет по адресу: ул. Комарова, 17.</p>
+        </section>
+        <section>
+            <img src="pictures/tattoo.jpg" alt="Фото рабочего процесса в тату-салоне">
+        </section>
+        <section>
+            <p>Я работаю исключительно профессиональным оборудованием, соблюдаю все нормы стерильности и безопасности. Каждая татуировка выполняется с максимальной аккуратностью и вниманием к деталям. Ваш комфорт и безопасность - мой главный приоритет.</p>
+        </section>
+        <section id="pictures">
+            <img src="pictures/пример1.jpg" alt="слайдер" id="i1" class="picture center">
+            <img src="pictures/пример2.jpg" alt="слайдер" id="i2" class="picture">
+            <img src="pictures/пример3.jpg" alt="слайдер" id="i3" class="picture">
+            <img src="pictures/пример4.jpg" alt="слайдер" id="i4" class="picture">
+            <img src="pictures/пример5.jpg" alt="слайдер" id="i5" class="picture">
+            <img src="pictures/пример6.jpg" alt="слайдер" id="i6" class="picture">
+
+            <img src="pictures/слайдер.png" alt="вправо" class="toRight controls">
+            <img src="pictures/слайдер.png" alt="влево" class="toLeft controls">
+        </section>
+        <section>
+            <p>Почему стоит выбрать меня? Я не просто наношу татуировки - я помогаю воплощать ваши идеи в жизнь. Могу помочь с разработкой уникального эскиза или адаптировать уже готовый рисунок. Работаю в разных стилях и всегда открыта для творческих экспериментов. Давайте создадим что-то особенное вместе!</p>
+        </section>
+        <a href="https://t.me/qtvampp?text=Здравствуйте!%20Хочу%20записаться%20на%20татуировку.%20" class="tg-button" target="_blank">
+            <button>Записаться</button>
+        </a>
+        <div class="admin-access">
+            <button id="adminLoginBtn">Вход для мастера</button>
+            <input type="password" id="adminPasswordInput" placeholder="Пароль" style="display: none;">
+            <div id="adminError" style="color: #ff3333; display: none; margin-top: 5px;"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>

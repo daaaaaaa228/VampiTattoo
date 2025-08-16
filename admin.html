@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vampi Tattoo - Админ</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #5A0000, #000000);
+            margin: 0;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 2000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            width: 100%;
+            max-width: 800px;
+            min-width: 300px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #f00;
+            border-radius: 10px;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        
+        h1 {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            text-align: center;
+            margin: 0 0 15px 0;
+            color: #f00;
+        }
+        
+        h3 {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            margin: 15px 0 10px 0;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 400px) {
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .photo-card {
+            border: 1px solid #f00;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 150px;
+            position: relative;
+        }
+        
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .photo-actions button {
+            background: #f00;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .upload-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #f00;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .file-upload label {
+            background: #f00;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        #preview {
+            max-width: 100%;
+            max-height: 200px;
+            display: none;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        
+        button {
+            background: #f00;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #d00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="admin-container">
+            <h1>Управление фотогалереей</h1>
+            
+            <div class="photo-grid" id="photoGrid"></div>
+            
+            <div class="upload-section">
+                <h3>Добавить новое фото</h3>
+                <div class="file-upload">
+                    <label for="fileInput">Выбрать файл</label>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <img id="preview" alt="Предпросмотр">
+                    <button id="addPhotoBtn">Добавить фото</button>
+                </div>
+            </div>
+            
+            <button onclick="window.location.href='index.html'">Вернуться на сайт</button>
+        </div>
+    </div>
+
+    <script>
+        // Проверка авторизации
+        if (localStorage.getItem('adminAuth') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPhotos();
+            
+            // Настройка загрузки файлов
+            document.getElementById('fileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('preview').src = event.target.result;
+                        document.getElementById('preview').style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Кнопка добавления
+            document.getElementById('addPhotoBtn').addEventListener('click', addPhoto);
+        });
+
+        function loadPhotos() {
+            const photoGrid = document.getElementById('photoGrid');
+            photoGrid.innerHTML = '';
+            
+            const photos = JSON.parse(localStorage.getItem('vampiTattooPhotos')) || [];
+            
+            photos.forEach(photo => {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.innerHTML = `
+                    <img src="${photo.src}" alt="${photo.alt}">
+                    <div class="photo-actions">
+                        <button onclick="movePhoto(${photo.id}, 'up')">↑</button>
+                        <button onclick="deletePhoto(${photo.id})">✕</button>
+                        <button onclick="movePhoto(${photo.id}, 'down')">↓</button>
+                    </div>
+                `;
+                photoGrid.appendChild(card);
+            });
+        }
+
+        function addPhoto() {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.files[0]) {
+                alert('Пожалуйста, выберите файл изображения');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let photos = JSON.parse(localStorage.getItem('vampiTattooPhotos')) || [];
+                const newId = photos.length > 0 ? Math.max(...photos.map(p => p.id)) + 1 : 1;
+                
+                photos.push({
+                    id: newId,
+                    src: e.target.result,
+                    alt: 'Новая татуировка ' + newId
+                });
+                
+                localStorage.setItem('vampiTattooPhotos', JSON.stringify(photos));
+                
+                // Очищаем форму
+                fileInput.value = '';
+                document.getElementById('preview').style.display = 'none';
+                
+                // Обновляем галерею
+                loadPhotos();
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+        function deletePhoto(id) {
+            if (!confirm('Удалить это фото из галереи?')) return;
+            
+            let photos = JSON.parse(localStorage.getItem('vampiTattooPhotos'));
+            photos = photos.filter(photo => photo.id !== id);
+            
+            localStorage.setItem('vampiTattooPhotos', JSON.stringify(photos));
+            loadPhotos();
+        }
+
+        function movePhoto(id, direction) {
+            let photos = JSON.parse(localStorage.getItem('vampiTattooPhotos'));
+            const index = photos.findIndex(photo => photo.id === id);
+            
+            if (direction === 'up' && index > 0) {
+                [photos[index], photos[index - 1]] = [photos[index - 1], photos[index]];
+            } else if (direction === 'down' && index < photos.length - 1) {
+                [photos[index], photos[index + 1]] = [photos[index + 1], photos[index]];
+            } else {
+                return;
+            }
+            
+            localStorage.setItem('vampiTattooPhotos', JSON.stringify(photos));
+            loadPhotos();
+        }
+    </script>
+</body>
+</html>
