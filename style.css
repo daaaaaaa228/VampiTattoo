@@ -501,4 +501,9 @@ button:hover {
      p{
         margin-left: 10vw;
      }
+
+     [src="pictures/tattoo.jpg"]{
+        width: 70vw;
+        height: auto;
+     }
 }
