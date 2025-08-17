@@ -1,48 +1,49 @@
-body{
+body {
     background: linear-gradient(to bottom, #5A0000, #000000);
     display: flex;
     justify-content: center;
-    background-attachment: fixed
+    background-attachment: fixed;
+    margin: 0;
+    padding: 20px 0;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
-h1{
+h1 {
     font-family: "UnifrakturMaguntia";
     text-align: center;
     font-size: 5rem;
     text-shadow: 
-    -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
-    1px 1px 0 #fff;
-    margin-top: 0rem;
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+    margin-top: 0;
+    margin-bottom: 2rem;
 }
 
-.container{
+.container {
     max-width: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
-section{
+section {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1rem 0;
+    width: 100%;
 }
 
-p{
+p {
     color: #aaa;
     font-size: 1.5rem;
-}
-
-img{
-    color: #aaa;
-}
-
-.container section:nth-child(5){
-    flex-direction: row;
-    justify-content: center;
+    text-align: center;
+    margin: 0.5rem 1rem;
+    line-height: 1.5;
 }
 
 button {
@@ -50,10 +51,11 @@ button {
     color: #f00;
     border: 1px solid red;
     background: rgba(0, 0, 0, 0);
-    padding: 0.5rem 1rem;
-    border-radius: 0.3vw;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
+    margin: 1rem 0;
 }
 
 button:hover {
@@ -69,106 +71,246 @@ button:active {
     box-shadow: none;
 }
 
-section img{
-    margin: 1rem;
-    display: none;
-    border-radius: 1rem;
-    border: 3px solid rgba(0, 0, 0, 0.5);
-}
-
-.center{
-    height: 30vw;
-    display: block;
-}
-
-.toRight{
-    position: absolute;
-    display: block;
-    border: 0;
-    width: 5rem;
-    opacity: 0.5;
-    right: 30vw;
-}
-
-.toLeft{
-    position: absolute;
-    display: block;
-    border: 0;
-    width: 5rem;
-    opacity: 0.5;
-    left: 30vw;
-    transform: scaleX(-1);
-}
-
-.toRight:hover, .toLeft:hover{
-    opacity: 1;
-}
-
-.admin-access {
-    margin-top: 2rem;
-    text-align: center;
-}
-
-#adminPasswordInput {
-    font-size: 1rem;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-    border: 1px solid #f00;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 0.3vw;
-    width: 150px;
-    text-align: center;
-}
-
-#adminPasswordInput:focus {
-    outline: none;
-    box-shadow: 0 0 5px #f00;
-}
-
 .tg-button {
     text-decoration: none;
 }
 
-[src="pictures/tattoo.jpg"]{
-    display: block;
-    height: 30vw;
+/* Стили галереи */
+#pictures {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
 }
 
-@media (max-width: 900px){
-    .toLeft{
+.picture {
+    margin: 1rem;
+    display: none;
+    border-radius: 1rem;
+    border: 3px solid rgba(0, 0, 0, 0.5);
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.center {
+    height: 30vw;
+    max-height: 500px;
+    display: block;
+}
+
+.controls {
+    position: absolute;
+    width: 5rem;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.controls:hover {
+    opacity: 1;
+}
+
+.toRight {
+    right: 35vw;
+    transform: scaleX(-1);
+}
+
+.toLeft {
+    left: 35vw;
+}
+
+/* Главное изображение */
+[src="pictures/tattoo.jpg"] {
+    display: block;
+    height: 30vw;
+    max-height: 500px;
+    width: auto;
+    border-radius: 1rem;
+    border: 3px solid rgba(0, 0, 0, 0.5);
+    margin: 1rem 0;
+}
+
+/* Адаптивность */
+@media (max-width: 900px) {
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    p {
+        font-size: 1.3rem;
+    }
+
+    .toLeft {
         left: 15vw;
     }
 
-    .toRight{
+    .toRight {
         right: 15vw;
     }
 
-
-    .center{
+    .center,
+    [src="pictures/tattoo.jpg"] {
         height: 60vw;
     }
-
-    [src="pictures/tattoo.jpg"]{
-        height: 60vw;
-    }
-    
 }
 
-@media (max-width: 500px){
-    .toLeft{
+@media (max-width: 500px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    p {
+        font-size: 1.1rem;
+    }
+
+    .toLeft {
         left: 5vw;
     }
 
-    .toRight{
+    .toRight {
         right: 5vw;
     }
 
-    .center{
-        height: 90vw;
+    .center,
+    [src="pictures/tattoo.jpg"] {
+        height: 70vw;
     }
 
-    [src="pictures/tattoo.jpg"]{
-        height: 90vw;
+    .controls {
+        width: 3rem;
     }
 }
+
+/* Основные стили */
+body {
+    background: linear-gradient(to bottom, #5A0000, #000000);
+    display: flex;
+    justify-content: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 20px 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes textGlow {
+    0% { text-shadow: 0 0 5px rgba(255,0,0,0.3); }
+    50% { text-shadow: 0 0 15px rgba(255,0,0,0.7); }
+    100% { text-shadow: 0 0 5px rgba(255,0,0,0.3); }
+}
+
+@keyframes buttonPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,0,0,0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(255,0,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,0,0,0); }
+}
+
+@keyframes inkDrop {
+    0% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+    20% { opacity: 0.7; }
+    100% { transform: translateY(100vh) scale(1.2); opacity: 0; }
+}
+
+/* Применение анимаций */
+.animate-text {
+    animation: fadeIn 1.5s ease-in-out, textGlow 3s infinite;
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+.animate-button {
+    animation: buttonPulse 2s infinite;
+}
+
+/* Эффекты при наведении */
+button:hover {
+    animation: none;
+    transform: translateY(-5px) scale(1.05);
+}
+
+/* Чернильные капли */
+.ink-drops {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.ink-drops::before,
+.ink-drops::after {
+    content: "";
+    position: absolute;
+    background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: inkDrop 8s linear infinite;
+}
+
+.ink-drops::before {
+    width: 100px;
+    height: 100px;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.ink-drops::after {
+    width: 150px;
+    height: 150px;
+    left: 70%;
+    animation-delay: 3s;
+}
+
+/* Анимация появления секций */
+.content-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.content-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Анимация галереи */
+.picture {
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.picture.center {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255,0,0,0.5);
+}
+
+/* Остальные стили остаются как были */
+/* ... */

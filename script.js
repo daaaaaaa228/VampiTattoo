@@ -1,80 +1,77 @@
-// Галерея
-const pictures = document.querySelector("#pictures");
-const toRight = pictures.querySelector(".toRight");
-const toLeft = pictures.querySelector(".toLeft");
-let imageIndex = 0;
+// Галерея работ
+document.addEventListener('DOMContentLoaded', function() {
+  const pictures = document.querySelector("#pictures");
+  const toRight = pictures.querySelector(".toRight");
+  const toLeft = pictures.querySelector(".toLeft");
+  const images = pictures.querySelectorAll('.picture');
+  let currentIndex = 0;
 
-function loadGalleryPhotos() {
-    const photos = JSON.parse(localStorage.getItem('vampiTattooPhotos')) || [
-        {src: 'pictures/пример1.jpg', alt: 'Тату пример 1'},
-        {src: 'pictures/пример2.jpg', alt: 'Тату пример 2'},
-        {src: 'pictures/пример3.jpg', alt: 'Тату пример 3'},
-        {src: 'pictures/пример4.jpg', alt: 'Тату пример 4'},
-        {src: 'pictures/пример5.jpg', alt: 'Тату пример 5'},
-        {src: 'pictures/пример6.jpg', alt: 'Тату пример 6'}
-    ];
-
-    pictures.querySelectorAll('.picture').forEach(img => img.remove());
-    
-    photos.forEach((photo, index) => {
-        const img = document.createElement('img');
-        img.src = photo.src;
-        img.alt = photo.alt;
-        img.className = 'picture';
-        img.id = `i${index + 1}`;
-        if (index === 0) img.classList.add('center');
-        pictures.insertBefore(img, toRight);
-    });
-}
-
-loadGalleryPhotos();
-const images = pictures.querySelectorAll('.picture');
-
-function show(index) {
-    images[imageIndex].classList.remove('center');
-    images[index].classList.add("center");
-    imageIndex = index;
-}
-
-toRight.addEventListener('click', () => {
-    let index = imageIndex + 1;
-    if (index >= images.length) index = 0;
-    show(index);
-});
-
-toLeft.addEventListener('click', () => {
-    let index = imageIndex - 1;
-    if (index < 0) index = images.length - 1;
-    show(index);
-});
-
-// Админ-панель
-const adminLoginBtn = document.getElementById('adminLoginBtn');
-const adminPasswordInput = document.getElementById('adminPasswordInput');
-const adminError = document.getElementById('adminError');
-
-adminLoginBtn.addEventListener('click', () => {
-  if (adminPasswordInput.style.display === 'none') {
-    adminPasswordInput.style.display = 'inline-block';
-    adminPasswordInput.focus();
-    adminError.style.display = 'none';
-  } else {
-    checkAdminPassword();
+  // Функция показа текущего изображения
+  function showImage(index) {
+      images.forEach(img => {
+          img.classList.remove('center');
+          img.style.opacity = '0';
+          img.style.transform = 'scale(0.9)';
+      });
+      
+      images[index].classList.add('center');
+      images[index].style.opacity = '1';
+      images[index].style.transform = 'scale(1.05)';
+      currentIndex = index;
   }
-});
 
-adminPasswordInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') checkAdminPassword();
-});
+  // Обработчики кнопок навигации
+  toRight.addEventListener('click', () => {
+      let newIndex = currentIndex + 1;
+      if (newIndex >= images.length) newIndex = 0;
+      showImage(newIndex);
+  });
 
-function checkAdminPassword() {
-  const password = '6130';
-  if (adminPasswordInput.value === password) {
-    localStorage.setItem('adminAuth', 'true');
-    window.location.href = 'admin.html';
-  } else {
-    adminError.textContent = 'Неверный пароль';
-    adminError.style.display = 'block';
-    adminPasswordInput.value = '';
+  toLeft.addEventListener('click', () => {
+      let newIndex = currentIndex - 1;
+      if (newIndex < 0) newIndex = images.length - 1;
+      showImage(newIndex);
+  });
+
+  // Инициализация - показываем первое изображение
+  showImage(0);
+
+  // Анимация появления секций при скролле
+  const sections = document.querySelectorAll('.content-section');
+  
+  function checkScroll() {
+      sections.forEach(section => {
+          const sectionTop = section.getBoundingClientRect().top;
+          const windowHeight = window.innerHeight;
+          
+          if (sectionTop < windowHeight - 100) {
+              section.classList.add('visible');
+          }
+      });
   }
-}
+  
+  window.addEventListener('scroll', checkScroll);
+  checkScroll(); // Проверить при загрузке
+
+  // Создаем чернильные капли
+  function createInkDrops() {
+      const inkContainer = document.querySelector('.ink-drops');
+      
+      for (let i = 0; i < 5; i++) {
+          const drop = document.createElement('div');
+          drop.style.position = 'absolute';
+          drop.style.width = `${Math.random() * 100 + 50}px`;
+          drop.style.height = drop.style.width;
+          drop.style.left = `${Math.random() * 100}%`;
+          drop.style.background = 'radial-gradient(circle, rgba(255,0,0,0.3) 0%, transparent 70%)';
+          drop.style.borderRadius = '50%';
+          drop.style.animation = `inkDrop ${Math.random() * 5 + 5}s linear infinite`;
+          drop.style.animationDelay = `${Math.random() * 5}s`;
+          drop.style.opacity = '0';
+          
+          inkContainer.appendChild(drop);
+      }
+  }
+  
+  createInkDrops();
+});
