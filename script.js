@@ -1,77 +1,105 @@
-// Галерея работ
 document.addEventListener('DOMContentLoaded', function() {
-  const pictures = document.querySelector("#pictures");
-  const toRight = pictures.querySelector(".toRight");
-  const toLeft = pictures.querySelector(".toLeft");
-  const images = pictures.querySelectorAll('.picture');
-  let currentIndex = 0;
-
-  // Функция показа текущего изображения
-  function showImage(index) {
-      images.forEach(img => {
-          img.classList.remove('center');
-          img.style.opacity = '0';
-          img.style.transform = 'scale(0.9)';
-      });
-      
-      images[index].classList.add('center');
-      images[index].style.opacity = '1';
-      images[index].style.transform = 'scale(1.05)';
-      currentIndex = index;
-  }
-
-  // Обработчики кнопок навигации
-  toRight.addEventListener('click', () => {
-      let newIndex = currentIndex + 1;
-      if (newIndex >= images.length) newIndex = 0;
-      showImage(newIndex);
-  });
-
-  toLeft.addEventListener('click', () => {
-      let newIndex = currentIndex - 1;
-      if (newIndex < 0) newIndex = images.length - 1;
-      showImage(newIndex);
-  });
-
-  // Инициализация - показываем первое изображение
-  showImage(0);
-
-  // Анимация появления секций при скролле
-  const sections = document.querySelectorAll('.content-section');
+  const slider = document.querySelector('.slider');
+  const track = document.querySelector('.slider-track');
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
   
-  function checkScroll() {
-      sections.forEach(section => {
-          const sectionTop = section.getBoundingClientRect().top;
-          const windowHeight = window.innerHeight;
-          
-          if (sectionTop < windowHeight - 100) {
-              section.classList.add('visible');
+  let currentIndex = 0;
+  const slideCount = slides.length;
+  
+  // Создаем индикаторы
+  const indicatorsContainer = document.createElement('div');
+  indicatorsContainer.className = 'slider-indicators';
+  slider.appendChild(indicatorsContainer);
+  
+  for (let i = 0; i < slideCount; i++) {
+      const indicator = document.createElement('div');
+      indicator.className = 'slider-indicator';
+      if (i === 0) indicator.classList.add('active');
+      indicator.addEventListener('click', () => goToSlide(i));
+      indicatorsContainer.appendChild(indicator);
+  }
+  
+  // Функция обновления слайдера
+  function updateSlider() {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      
+      // Обновляем индикаторы
+      document.querySelectorAll('.slider-indicator').forEach((indicator, index) => {
+          if (index === currentIndex) {
+              indicator.classList.add('active');
+          } else {
+              indicator.classList.remove('active');
           }
       });
   }
   
-  window.addEventListener('scroll', checkScroll);
-  checkScroll(); // Проверить при загрузке
-
-  // Создаем чернильные капли
-  function createInkDrops() {
-      const inkContainer = document.querySelector('.ink-drops');
-      
-      for (let i = 0; i < 5; i++) {
-          const drop = document.createElement('div');
-          drop.style.position = 'absolute';
-          drop.style.width = `${Math.random() * 100 + 50}px`;
-          drop.style.height = drop.style.width;
-          drop.style.left = `${Math.random() * 100}%`;
-          drop.style.background = 'radial-gradient(circle, rgba(255,0,0,0.3) 0%, transparent 70%)';
-          drop.style.borderRadius = '50%';
-          drop.style.animation = `inkDrop ${Math.random() * 5 + 5}s linear infinite`;
-          drop.style.animationDelay = `${Math.random() * 5}s`;
-          drop.style.opacity = '0';
-          
-          inkContainer.appendChild(drop);
-      }
+  // Переход к конкретному слайду
+  function goToSlide(index) {
+      currentIndex = index;
+      if (currentIndex >= slideCount) currentIndex = 0;
+      if (currentIndex < 0) currentIndex = slideCount - 1;
+      updateSlider();
   }
   
-  createInkDrops();
+  // Кнопка "назад"
+  prevBtn.addEventListener('click', () => {
+      currentIndex--;
+      if (currentIndex < 0) currentIndex = slideCount - 1;
+      updateSlider();
+  });
+  
+  // Кнопка "вперед"
+  nextBtn.addEventListener('click', () => {
+      currentIndex++;
+      if (currentIndex >= slideCount) currentIndex = 0;
+      updateSlider();
+  });
+  
+  // Автоматическое перелистывание
+  let slideInterval = setInterval(() => {
+      currentIndex++;
+      if (currentIndex >= slideCount) currentIndex = 0;
+      updateSlider();
+  }, 5000);
+  
+  // Остановка при наведении
+  slider.addEventListener('mouseenter', () => {
+      clearInterval(slideInterval);
+  });
+  
+  slider.addEventListener('mouseleave', () => {
+      slideInterval = setInterval(() => {
+          currentIndex++;
+          if (currentIndex >= slideCount) currentIndex = 0;
+          updateSlider();
+      }, 5000);
+  });
+  
+  // Свайп для мобильных устройств
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  track.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+  }, {passive: true});
+  
+  track.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+  }, {passive: true});
+  
+  function handleSwipe() {
+      if (touchEndX < touchStartX - 50) {
+          // Свайп влево - следующий слайд
+          currentIndex++;
+          if (currentIndex >= slideCount) currentIndex = 0;
+      } else if (touchEndX > touchStartX + 50) {
+          // Свайп вправо - предыдущий слайд
+          currentIndex--;
+          if (currentIndex < 0) currentIndex = slideCount - 1;
+      }
+      updateSlider();
+  }
 });
