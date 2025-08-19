@@ -506,4 +506,8 @@ button:hover {
         width: 70vw;
         height: auto;
      }
+
+     .container{
+        margin-left: 10vw;
+    }
 }
