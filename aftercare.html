@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vampi Tattoo | Уход за татуировкой</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="icon" href="pictures/title.png">
+    <style>
+        body.aftercare-page {
+            background: url(pictures/фон.jpg) no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+        }
+
+        .aftercare-container {
+            max-width: 900px;
+            margin: 100px auto 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+        
+        .aftercare-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .aftercare-title {
+            font-family: "UnifrakturMaguntia";
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(255, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .aftercare-subtitle {
+            color: #aaa;
+            font-size: 1.2rem;
+        }
+        
+        .care-method-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        
+        .method-btn {
+            padding: 12px 25px;
+            background: rgba(255, 50, 50, 0.3);
+            color: #fff;
+            border: 1px solid #ff3333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .method-btn.active {
+            background: rgba(255, 50, 50, 0.7);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        
+        .method-btn:hover {
+            background: rgba(255, 50, 50, 0.5);
+        }
+        
+        .care-method {
+            display: none;
+        }
+        
+        .care-method.active {
+            display: block;
+        }
+        
+        .care-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 10px;
+            border-left: 4px solid #ff3333;
+        }
+        
+        .care-title {
+            color: #ff3333;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .care-title span {
+            margin-right: 10px;
+        }
+        
+        .care-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .care-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .care-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .care-list li::before {
+            content: "•";
+            color: #ff3333;
+            font-weight: bold;
+            display: inline-block;
+            width: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .warning {
+            background: rgba(255, 50, 50, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ff3333;
+        }
+        
+        .warning-title {
+            color: #ff3333;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .healing-timeline {
+            display: flex;
+            flex-direction: column;
+            margin: 30px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .timeline-date {
+            min-width: 150px;
+            color: #ff3333;
+            font-weight: bold;
+            padding-right: 20px;
+            text-align: right;
+        }
+        
+        .timeline-content {
+            padding-left: 20px;
+            border-left: 2px solid #ff3333;
+            flex: 1;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item:last-child .timeline-content {
+            border-left: 2px solid transparent;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 0, 0, 0.2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #ff3333;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* Исправления для бургер-меню на этой странице */
+        .aftercare-page header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,0) 100%);
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            height: 5vw;
+        }
+
+        .aftercare-page .burger-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1002;
+        }
+
+        .aftercare-page .tg-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            text-decoration: none;
+        }
+
+        .aftercare-page .tg-button-2 {
+            position: fixed;
+            top: 20px;
+            left: 80px;
+            z-index: 1001;
+            text-decoration: none;
+        }
+
+        /* Принудительно разрешаем скролл */
+        html, body {
+            overflow: auto !important;
+            height: auto !important;
+        }
+
+        .aftercare-page {
+            position: relative;
+            height: auto;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 768px) {
+            .aftercare-container {
+                margin: 120px auto 40px;
+                padding: 15px;
+            }
+            
+            .aftercare-title {
+                font-size: 2.5rem;
+            }
+            
+            .care-title {
+                font-size: 1.5rem;
+            }
+            
+            .timeline-item {
+                flex-direction: column;
+            }
+            
+            .timeline-date {
+                text-align: left;
+                padding-right: 0;
+                margin-bottom: 5px;
+            }
+            
+            .timeline-content {
+                padding-left: 15px;
+                border-left: 2px solid #ff3333;
+            }
+            
+            .care-method-selector {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .aftercare-page .tg-button-2 {
+                left: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .aftercare-container {
+                margin: 100px 20px 40px;
+                padding: 15px;
+                margin-left: 20vw;
+            }
+
+            .aftercare-page .tg-button,
+            .aftercare-page .tg-button-2 {
+                position: fixed;
+                top: 15px;
+            }
+
+            .aftercare-page .tg-button {
+                right: 15px;
+            }
+
+            .aftercare-page .tg-button-2 {
+                left: 60px;
+            }
+
+            .aftercare-page .burger-menu {
+                top: 15px;
+                left: 15px;
+            }
+
+            .aftercare-page .burger-icon {
+                font-size: 1rem;
+                padding: 5px 8px;
+            }
+
+            .aftercare-title {
+                font-size: 2rem;
+            }
+
+            h1{
+                margin-left: -5rem;
+            }
+        }
+    </style>
+</head>
+<body class="aftercare-page">
+    <header>
+        <h1 class="animate__animated animate__fadeInDown">Vampi Tattoo</h1>
+        
+        <!-- Бургер меню -->
+        <div class="burger-menu">
+            <div class="burger-icon">☰</div>
+            <nav class="burger-nav">
+                <a href="index.html">Главная страница</a>
+                <a href="https://t.me/vampi_tattoo" target="_blank">Мой Telegram канал</a>
+                <a href="gallery.html">Галерея</a>
+            </nav>
+        </div>
+
+        <a href="https://t.me/qtvampp?text=Здравствуйте!%20Хочу%20записаться%20на%20татуировку." class="tg-button" target="_blank">
+            <button class="animate-button">Записаться</button>
+        </a>
+    </header>
+
+    <div class="container">
+        
+        <div class="aftercare-container animate__animated animate__fadeIn">
+            <div class="aftercare-header">
+                <h2 class="aftercare-title">Уход за татуировкой</h2>
+                <p class="aftercare-subtitle">Правильный уход — зачётная и долговечная татуировка</p>
+            </div>
+            
+            <div class="care-method-selector">
+                <button class="method-btn active" data-method="traditional">Классический метод</button>
+                <button class="method-btn" data-method="film">Заживление под плёнкой</button>
+            </div>
+            
+            <!-- Классический метод -->
+            <div class="care-method active" id="traditional-method">
+                <div class="care-section">
+                    <h3 class="care-title"><span>🩹</span> Первые действия (классический метод)</h3>
+                    <ul class="care-list">
+                        <li>Придя домой, сразу снимите защитную повязку</li>
+                        <li>Теплой водой с антибактериальным мылом (без отдушек) осторожно промойте татуировку</li>
+                        <li>Промокните чистой бумажной салфеткой, дайте высохнуть на воздухе 15-20 минут</li>
+                        <li>Нанесите тонкий слой рекомендованной мастером мази (Бепантен, Д-Пантенол)</li>
+                        <li>Сделайте новую чистую повязку</li>
+                    </ul>
+                </div>
+                
+                <div class="care-section">
+                    <h3 class="care-title"><span>🚿</span> Первая неделя (классический метод)</h3>
+                    <ul class="care-list">
+                        <li>После каждого мытья наносите тонкий слой заживляющей мази</li>
+                        <li>Не допускайте пересыхания татуировки, но и не переувлажняйте её</li>
+                        <li>Носите свободную одежду из натуральных тканей, не травмирующую татуировку</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Метод заживления под пленкой -->
+            <div class="care-method" id="film-method">
+                <div class="care-section">
+                    <h3 class="care-title"><span>🩹</span> Первые дни (заживление под плёнкой)</h3>
+                    <ul class="care-list">
+                        <li>Оставьте защитную плёнку на 5-6 дней (точное время укажет мастер)</li>
+                        <li>Избегайте интенсивных физических нагрузок и попадания горячей воды на плёнку</li>
+                        <li>Если под плёнкой скопилась жидкость — это нормально, не снимайте плёнку раньше времени</li>
+                        <li>Если края плёнки начинают отклеиваться, аккуратно обрежьте их чистыми ножницами</li>
+                        <li>Избегайте алкоголя и сосудорасширяющих напитков, таких как кофе, в первые дни заживления</li>
+                    </ul>
+                </div>
+                
+                <div class="care-section">
+                    <h3 class="care-title"><span>🚿</span> Снятие плёнки и дальнейший уход</h3>
+                    <ul class="care-list">
+                        <li>Аккуратно снимите плёнку под струей теплой воды, отклеивая от края к центру</li>
+                        <li>Теплой водой с антибактериальным мылом осторожно промойте татуировку, удаляя остатки клея</li>
+                        <li>Промокните чистой бумажной салфеткой, дайте высохнуть на воздухе 15-20 минут</li>
+                        <li>Нанесите тонный слой увлажняющего крема без отдушек (при необходимости)</li>
+                    </ul>
+                </div>
+                
+                <div class="care-section">
+                    <h3 class="care-title"><span>🔬</span> После снятия плёнки</h3>
+                    <ul class="care-list">
+                        <li>Мойте татуировку каждые 3 часа антибактериальным мылом без отдушек</li>
+                        <li>После каждого мытья наносите тонкий слой заживляющей мази</li>
+                        <li>Татуировка может продолжать шелушиться еще несколько дней — это нормально</li>
+                        <li>Избегайте трения, солнечных лучей и посещения бассейнов/саун еще как минимум 2 недели</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Общие рекомендации для обоих методов -->
+            <div class="care-section">
+                <h3 class="care-title"><span>⚠️</span> Что нельзя делать в процессе заживления (для всех методов)</h3>
+                <ul class="care-list">
+                    <li>Не сдирайте корочки и не чешите татуировку</li>
+                    <li>Не посещайте бани, сауны, бассейны и открытые водоёмы</li>
+                    <li>Избегайте прямых солнечных лучей и солярия</li>
+                    <li>Не наносите на татуировку спиртосодержащие средства</li>
+                    <li>Ограничьте физические нагрузки, вызывающие обильное потоотделение</li>
+                    <li>Избегайте алкоголя и сосудосуживающих напитков в первые дни заживления</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <div class="warning-title">Обратите внимание!</div>
+                <p>Если вы заметили чрезмерное покраснение, опухание, гнойные выделения или повышение температуры тела — немедленно обратитесь к врачу! Это могут быть признаки инфекции.</p>
+            </div>
+            
+            <div class="care-section">
+                <h3 class="care-title"><span>📅</span> Процесс заживления по дням</h3>
+                <div class="healing-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">1-3 день</div>
+                        <div class="timeline-content">Покраснение, отёк, выделение сукровицы. Татуировка выглядит ярко и влажно.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">3-7 день</div>
+                        <div class="timeline-content">Образование корочек, начинается шелушение. Возможен зуд. Цвет становится немного тусклее.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">7-14 день</div>
+                        <div class="timeline-content">Интенсивное шелушение, отпадение корочек. Ни в коем случае не сдирайте их!</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">14-30 день</div>
+                        <div class="timeline-content">Внешнее заживление завершено, но процесс восстановления кожи продолжается глубоко.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">1-3 месяца</div>
+                        <div class="timeline-content">Кожа полностью восстанавливается. Татуировка приобретает окончательный вид.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="care-section">
+                <h3 class="care-title"><span>🌞</span> Долгосрочный уход</h3>
+                <ul class="care-list">
+                    <li>Всегда используйте солнцезащитный крем с SPF 30+ на татуировке при пребывании на солнце</li>
+                    <li>Регулярно увлажняйте кожу качественным кремом без отдушек</li>
+                    <li>Избегайте резкого набора или потери веса, чтобы не исказить изображение</li>
+                </ul>
+            </div>
+            
+            <p>Если у вас возникли вопросы по уходу за татуировкой, не стесняйтесь обратиться к своему мастеру!</p>
+            
+            <a href="index.html" class="back-button">Вернуться на главную</a>
+        </div>
+    </div>
+
+    <div class="ink-drops"></div>
+    <script>
+        // Переключение между методами ухода
+        document.addEventListener('DOMContentLoaded', function() {
+            const methodButtons = document.querySelectorAll('.method-btn');
+            const methodSections = document.querySelectorAll('.care-method');
+            
+            methodButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const method = this.getAttribute('data-method');
+                    
+                    // Убираем активный класс у всех кнопок
+                    methodButtons.forEach(btn => btn.classList.remove('active'));
+                    // Добавляем активный класс текущей кнопке
+                    this.classList.add('active');
+                    
+                    // Скрываем все секции
+                    methodSections.forEach(section => section.classList.remove('active'));
+                    // Показываем нужную секцию
+                    document.getElementById(method + '-method').classList.add('active');
+                });
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
